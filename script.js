@@ -9,7 +9,7 @@ async function connectBluetooth() {
     try {
         const device = await navigator.bluetooth.requestDevice({
             acceptAllDevices: true,
-            optionalServices: ['0000180d-0000-1000-8000-00805f9b34fb'] // Service-UUID für den ESP32
+            // optionalServices: ['0000180d-0000-1000-8000-00805f9b34fb'] // Service-UUID für den ESP32
         });
 
         const server = await device.gatt.connect();
