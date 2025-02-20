@@ -1,32 +1,37 @@
-setTimeout(() => {
-  const p = document.createElement("p");
-  p.innerText = "and it's dynamic, too!";
-  document.body.appendChild(p);
-}, 2000);
+// app.js
 
-// Button zum Verbinden mit dem ESP32-Bluetooth-Gerät
-async function connectBluetooth() {
+// Wenn der Button zum Verbinden geklickt wird
+document.getElementById('connectButton').addEventListener('click', async () => {
     try {
+        // Gerät auswählen und mit ihm verbinden
         const device = await navigator.bluetooth.requestDevice({
-            acceptAllDevices: true,
-            // optionalServices: ['0000180d-0000-1000-8000-00805f9b34fb'] // Service-UUID für den ESP32
+            filters: [{ services: ['heart_rate'] }] // Beispiel: 'heart_rate' als Service (ändere nach Bedarf)
         });
 
+        console.log("Gerät ausgewählt: ", device.name);
+
+        // Mit dem Gerät verbinden
         const server = await device.gatt.connect();
-        const service = await server.getPrimaryService('0000180d-0000-1000-8000-00805f9b34fb');
-        const characteristic = await service.getCharacteristic('00002a37-0000-1000-8000-00805f9b34fb');
+        console.log("Verbunden mit GATT Server");
 
-        characteristic.addEventListener('characteristicvaluechanged', handleMessage);
+        // Den gewünschten Service und das Characteristic finden
+        const service = await server.getPrimaryService('heart_rate'); // Beispiel-Service
+        const characteristic = await service.getCharacteristic('heart_rate_measurement'); // Beispiel-Characteristic
+
+        // Benachrichtigungen abonnieren
         await characteristic.startNotifications();
+        characteristic.addEventListener('characteristicvaluechanged', handleCharacteristicValueChanged);
 
-        console.log('Bluetooth verbunden');
+        // Funktion zum Anzeigen der Nachrichten
+        function handleCharacteristicValueChanged(event) {
+            const value = event.target.value;
+            const messageContainer = document.getElementById('messageContainer');
+            const message = new TextDecoder().decode(value);
+            messageContainer.textContent = "Neue Nachricht: " + message;
+        }
+
     } catch (error) {
-        console.error('Fehler beim Verbinden:', error);
+        console.error("Fehler beim Verbinden oder Empfangen der Nachricht:", error);
     }
-}
+});
 
-// Funktion, um die empfangene Nachricht anzuzeigen
-function handleMessage(event) {
-    const value = new TextDecoder().decode(event.target.value);
-    document.getElementById('message').textContent = `Nachricht: ${value}`;
-}
