@@ -16,10 +16,12 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <h1>ESP32 Bluetooth Nachrichten</h1>
-    <button onclick="connectBluetooth()">Mit ESP32 verbinden</button>
-    <div id="message">Warte auf Nachrichten...</div>
-    <script src="index.js"></script>
+    <h1>BLE Nachrichten von ESP32</h1>
+    <button id="connectButton">Mit ESP32 verbinden</button>
+    <div id="messageContainer"></div>
+
+    <!-- JavaScript-Datei einbinden -->
+    <script src="app.js"></script>
   </body>
 </html>
 
