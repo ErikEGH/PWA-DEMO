@@ -1,65 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Zufallsgenerator</title>
-        
-        <!-- Manifest für die PWA -->
-        <link rel="manifest" href="manifest.json">
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zufallsgenerator</title>
+  
+  <!-- Verknüpfung zur manifest.json-Datei -->
+  <link rel="manifest" href="manifest.json">
 
-        <!-- Apple-spezifische Meta-Tags -->
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="apple-mobile-web-app-title" content="Zufallsgenerator">
-        <link rel="apple-touch-icon" href="icon-192.png">
+  <!-- Service Worker Registrierung -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+          console.log('Service Worker registriert:', registration);
+        }).catch(error => {
+          console.log('Service Worker Registrierung fehlgeschlagen:', error);
+        });
+      });
+    }
+  </script>
 
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                text-align: center;
-                padding: 35px;
-            }
-            #output {
-                margin-top: 30px;
-                font-size: 25px;
-            }
-            .input-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-bottom: 20px;
-            }
-            label, input {
-                margin-bottom: 30px;
-            }
-            button {
-                font-size: 20px;
-                padding: 15px 30px;
-            }
-        </style>
-    </head>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 35px; }
+    #output { margin-top: 30px; font-size: 25px; }
+    .input-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+    label, input { margin-bottom: 30px; }
+    button { font-size: 20px; padding: 15px 30px; }
+  </style>
+</head>
+<body>
 
-    <body>
-        <h1 id="test">Zufallsgenerator</h1>
-        <div class="input-container">
-            <label for="anzahl" style="font-size: 25px;">Bitberger-Anzahl:</label>
-            <input type="number" style="font-size: 22px;" id="anzahl" min="1" max="100" value="10">
-            <button onclick="generateRandomNumber()">Zufallsgenerator</button>
-        </div>
-        <div id="output"></div>
+  <h1>Zufallsgenerator</h1>
+  
+  <div class="input-container">
+    <label for="anzahl" style="font-size: 25px;">Bitberger-Anzahl: </label>
+    <input type="number" style="font-size: 22px;" id="anzahl" min="1" max="100" value="10">
+    <button onclick="generateRandomNumber()">Zufallsgenerator</button>
+  </div>
 
-        <script src="script.js"></script>
+  <div id="output"></div>
 
-        <script>
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(() => console.log('Service Worker registriert'))
-                    .catch(err => console.error('Service Worker Fehler:', err));
-            }
-        </script>
-    </body>
+  <script src="script.js"></script>
+
+</body>
 </html>
+
 </html>
 
 
