@@ -4,6 +4,16 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Zufallsgenerator</title>
+        
+        <!-- Manifest für die PWA -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Apple-spezifische Meta-Tags -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-title" content="Zufallsgenerator">
+        <link rel="apple-touch-icon" href="icon-192.png">
+
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -18,7 +28,7 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                margin-bottom: 20px; /* Abstand unterhalb des gesamten Input-Bereichs hinzufügen */
+                margin-bottom: 20px;
             }
             label, input {
                 margin-bottom: 30px;
@@ -31,7 +41,7 @@
     </head>
 
     <body>
-        <h1>Zufallsgenerator</h1>
+        <h1 id="test">Zufallsgenerator</h1>
         <div class="input-container">
             <label for="anzahl" style="font-size: 25px;">Bitberger-Anzahl:</label>
             <input type="number" style="font-size: 22px;" id="anzahl" min="1" max="100" value="10">
@@ -39,34 +49,17 @@
         </div>
         <div id="output"></div>
 
+        <script src="script.js"></script>
+
         <script>
-            let usedNumbers = [];
-
-            function generateRandomNumber() {
-                const anzahlInput = document.getElementById('anzahl');
-                const anzahl = parseInt(anzahlInput.value);
-
-                if (isNaN(anzahl) || anzahl < 1) {
-                    alert('Bitte geben Sie eine gültige Anzahl ein.');
-                    return;
-                }
-
-                const outputDiv = document.getElementById('output');
-                outputDiv.innerHTML = ''; // Clear previous output
-
-                let randomNumber;
-                do {
-                    randomNumber = Math.floor(Math.random() * anzahl) + 1;
-                } while (usedNumbers.includes(randomNumber));
-
-                usedNumbers.push(randomNumber);
-
-                const p = document.createElement('p');
-                p.textContent = `Sitzplatz Nr. ${randomNumber}`;
-                outputDiv.appendChild(p);
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(() => console.log('Service Worker registriert'))
+                    .catch(err => console.error('Service Worker Fehler:', err));
             }
         </script>
     </body>
+</html>
 </html>
 
 
