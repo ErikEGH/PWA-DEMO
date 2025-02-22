@@ -1,7 +1,7 @@
 {
   "name": "Sensor Auswertung",
   "short_name": "Bitberger",
-  "start_url": "/",
+  "start_url": "/PWA-DEMO/",
   "display": "standalone",
   "background_color": "#ffffff",
   "description": "Eine App für die Sensor Auswertung.",
